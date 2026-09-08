@@ -4,6 +4,9 @@
 
 using namespace REL;
 
+// 1.7.99 adds another base class, so all members are shifted by 8 bytes
+#define AE1799_SHIFT(offset) (REL::Module::get().version().compare(SKSE::RUNTIME_SSE_1_7_99) == std::strong_ordering::less ? (offset) : (offset) + 8)
+
 namespace RE
 {
 	bool PlayerCharacter::PlayerSkills::CanLevelUp()
@@ -94,7 +97,7 @@ namespace RE
 		if SKYRIM_REL_CONSTEXPR (REL::Module::IsVR()) {
 			return REL::RelocateMember<ActorHandle>(this, 0, 0xE8C).get();
 		} else {
-			return REL::RelocateMemberIfNewer<ActorHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x894, 0x89C).get();
+			return REL::RelocateMemberIfNewer<ActorHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x894, AE1799_SHIFT(0x89C)).get();
 		}
 	}
 
@@ -124,7 +127,7 @@ namespace RE
 		if SKYRIM_REL_CONSTEXPR (Module::IsVR()) {
 			return GetVRPlayerRuntimeData()->grabbedObjectData[a_device].grabbedObject.get();
 		} else {
-			return REL::RelocateMemberIfNewer<ObjectRefHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x8C8, 0x8D0).get();
+			return REL::RelocateMemberIfNewer<ObjectRefHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x8C8, AE1799_SHIFT(0x8D0)).get();
 		}
 	}
 
@@ -192,7 +195,7 @@ namespace RE
 		if SKYRIM_REL_VR_CONSTEXPR (REL::Module::IsVR()) {
 			return static_cast<bool>(REL::RelocateMember<ActorHandle>(this, 0, 0xE8C));
 		} else {
-			return static_cast<bool>(REL::RelocateMemberIfNewer<ActorHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x894, 0x89C));
+			return static_cast<bool>(REL::RelocateMemberIfNewer<ActorHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x894, AE1799_SHIFT(0x89C)));
 		}
 	}
 
@@ -206,7 +209,7 @@ namespace RE
 			}
 			return false;
 		} else {
-			return static_cast<bool>(REL::RelocateMemberIfNewer<ObjectRefHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x8C8, 0x8D0));
+			return static_cast<bool>(REL::RelocateMemberIfNewer<ObjectRefHandle>(SKSE::RUNTIME_SSE_1_6_629, this, 0x8C8, AE1799_SHIFT(0x8D0)));
 		}
 	}
 
